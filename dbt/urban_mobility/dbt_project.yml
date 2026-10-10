@@ -1,0 +1,20 @@
+# Permite que os arquivos já nasçam no formato que o Docker espera. 
+# O objetivo desta etapa é um dbt debug passando; os modelos da gold vêm depois que a silver existir.
+
+name: urban_mobility
+version: "1.0.0"
+profile: urban_mobility
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  urban_mobility:
+    staging:
+      +materialized: ephemeral   # não cria objeto no banco: só limpa/renomeia a silver
+    marts:
+      +materialized: table
+      +schema: gold

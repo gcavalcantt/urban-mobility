@@ -1,0 +1,8 @@
+{
+  "files.eol": "\n", // faz o VS Code salvar arquivos novos com LF
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "files.exclude": {
+    "**/__pycache__": true,
+    "dbt/**/target": true
+  }
+}
