@@ -11,7 +11,7 @@ e orquestração com Airflow.
 | Fase | Ferramenta | Por quê |
 
 ## Pré-requisitos
-- Docker Desktop (Compose v2), 6 GB de memória para o Docker
+- Docker Desktop (Compose v2), 5 GB de memória para o Docker
 
 ## Como executar
 1. `Copy-Item .env.example .env`
