@@ -9,4 +9,5 @@ urban_mobility:
       password: "{{ env_var('WAREHOUSE_PASSWORD') }}"
       dbname: "{{ env_var('WAREHOUSE_DB', 'urban_mobility') }}"
       schema: gold
-      threads: 4
+      threads: 2 # limite seguro para 24M linhas num ambiente de 5 GB
+      
