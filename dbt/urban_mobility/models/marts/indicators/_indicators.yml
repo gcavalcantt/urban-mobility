@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: mv_monthly_indicators
+    description: >
+      Item 7 da prova. Indicadores mensais (yyyymm) por fornecedor, calculados sobre
+      corridas válidas. Ver as definições no cabeçalho do modelo.
+    columns:
+      - name: year_month
+        description: Competência no formato yyyymm, pela data de embarque
+        data_tests: [not_null]
+      - name: vendor_id
+        data_tests: [not_null]
+      - name: total_trips
+        data_tests: [not_null]
+      - name: total_valid_revenue
+        data_tests: [not_null]

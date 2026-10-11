@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: Calendário diário, com membro -1 para datas desconhecidas.
+    columns:
+      - name: date_key
+        description: Chave no formato yyyymmdd (-1 = desconhecido)
+        data_tests: [unique, not_null]
+
+  - name: dim_vendor
+    description: Fornecedores de tecnologia da TLC, com membro -1 para códigos fora do domínio.
+    columns:
+      - name: vendor_key
+        data_tests: [unique, not_null]
+      - name: vendor_name
+        data_tests: [not_null]
+
+  - name: dim_payment_type
+    description: >
+      Tipos de pagamento. is_valid_payment define o que conta como receita válida;
+      is_in_reference_table indica se o código vem da tabela de referência da prova.
+    columns:
+      - name: payment_type_key
+        data_tests: [unique, not_null]
+      - name: is_valid_payment
+        data_tests: [not_null]
+
+  - name: fct_trips
+    description: >
+      Fato de corridas Yellow Taxi, uma linha por corrida (inclusive inválidas, sinalizadas).
+      Incremental por mês de origem.
+    columns:
+      - name: trip_id
+        description: Hash do arquivo de origem com todas as colunas originais da corrida
+        data_tests: [unique, not_null]
+      - name: date_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: vendor_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_vendor')
+                field: vendor_key
+      - name: payment_type_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_payment_type')
+                field: payment_type_key
+      - name: is_valid_trip
+        data_tests: [not_null]
+      - name: valid_revenue_amount
+        description: total_amount quando a corrida e o pagamento são válidos; zero nos demais casos
+        data_tests: [not_null]
+      - name: source_year_month
+        data_tests: [not_null]

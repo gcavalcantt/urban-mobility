@@ -1,0 +1,16 @@
+version: 2
+
+seeds:
+  - name: tlc_vendors
+    description: >
+      Fornecedores de tecnologia (TPEP) que enviam os registros de corrida,
+      conforme o dicionário de dados da TLC (versão de 18/03/2025).
+    config:
+      column_types:
+        vendor_id: integer
+        vendor_name: text
+    columns:
+      - name: vendor_id
+        data_tests: [unique, not_null]
+      - name: vendor_name
+        data_tests: [not_null]

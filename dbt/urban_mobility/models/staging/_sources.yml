@@ -3,14 +3,24 @@ version: 2
 sources:
   - name: silver
     schema: silver
-    description: Camada silver, carregada pelo job PySpark
+    description: Camada silver, carregada pelo job PySpark (src/transform/silver_job.py)
     tables:
       - name: payment_type
         description: Referência de tipos de pagamento (item 4 da prova)
         columns:
           - name: payment_type
-            data_tests:
-              - unique
-              - not_null
-      - name: yellow_trips # será criada pelo job PySpark; até lá, ela fica sem testes para não quebrar o build
-        description: Corridas Yellow Taxi tratadas (criada na etapa silver)
+            data_tests: [unique, not_null]
+          - name: is_valid_payment
+            data_tests: [not_null]
+
+      - name: yellow_trips
+        description: >
+          Corridas Yellow Taxi tratadas. Contém todas as linhas da bronze, com as flags
+          de qualidade (is_valid_trip, invalid_reason) e de anomalia.
+        columns:
+          - name: source_year_month
+            data_tests: [not_null]
+          - name: is_valid_trip
+            data_tests: [not_null]
+          - name: valid_revenue_amount
+            data_tests: [not_null]

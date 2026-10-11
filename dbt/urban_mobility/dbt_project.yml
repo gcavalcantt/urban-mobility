@@ -1,20 +1,30 @@
-# Permite que os arquivos já nasçam no formato que o Docker espera. 
-# O objetivo desta etapa é um dbt debug passando; os modelos da gold vêm depois que a silver existir.
-
 name: urban_mobility
 version: "1.0.0"
 profile: urban_mobility
 
 model-paths: ["models"]
 macro-paths: ["macros"]
+seed-paths: ["seeds"]
 test-paths: ["tests"]
 target-path: "target"
 clean-targets: ["target", "dbt_packages"]
 
+vars:
+  # intervalo do calendário da dim_date (datas fora dele caem no membro "desconhecido")
+  date_spine_start: "2025-01-01"
+  date_spine_end: "2026-12-31"
+
+seeds:
+  urban_mobility:
+    +schema: silver   # dado de referência, junto da silver.payment_type
+
 models:
   urban_mobility:
     staging:
-      +materialized: ephemeral   # não cria objeto no banco: só limpa/renomeia a silver
+      +materialized: ephemeral   # não cria objeto no banco: só padroniza a leitura da silver
     marts:
-      +materialized: table
       +schema: gold
+      core:
+        +materialized: table
+      indicators:
+        +materialized: materialized_view

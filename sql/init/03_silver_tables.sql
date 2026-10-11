@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS silver.yellow_trips (
     processed_at           TIMESTAMP NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS ix_yellow_trips_source_month ON silver.yellow_trips (source_year_month);
+-- (source_year_month, processed_at): acelera o delete do mês e a detecção de meses novos pelo dbt
+CREATE INDEX IF NOT EXISTS ix_yellow_trips_month_processed ON silver.yellow_trips (source_year_month, processed_at);
 CREATE INDEX IF NOT EXISTS ix_yellow_trips_pickup_month ON silver.yellow_trips (pickup_year_month);
 
 -- Área de staging: o Spark carrega aqui e a troca para a tabela final é feita
